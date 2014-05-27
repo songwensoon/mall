@@ -1,0 +1,46 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=rule&act=add">增加规格</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form id="form" method="post">
+	<table width="100%" cellspacing="0" cellpadding="0" border="0" class="list mat5">
+	<tbody>
+	<tr>
+		<td width="50" class="bgtt">ID号</td>
+		<td width="180" style="padding-left:30px" class="bgtt aleft">规格名称</td>
+		<td class="bgtt">规格值</td>
+		<td width="88" class="bgtt">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td style="background-color: rgb(255, 255, 255);">{$v['rule_id']}</td>
+		<td style="padding-left: 30px; background-color: rgb(255, 255, 255);" class="aleft">{$v['rule_name']}</td>
+		<td style="background-color: rgb(255, 255, 255);">
+		<!--{if(!empty($v['rule_list'])):}-->
+		<!--{foreach($v['rule_list'] as $vv):}-->
+		<span class="rule_id mal5">{$vv['ruledata_name']}</span>
+		<!--{endforeach;}-->
+		<!--{endif;}--></td>
+		<td style="background-color: rgb(255, 255, 255);">
+			<a class="admin_edit mar3" href="admin.php?mod=rule&act=edit&id={$v['rule_id']}">修改</a>
+			<a onclick="return pe_cfone(this, '删除')" class="admin_del" href="admin.php?mod=rule&act=del&id={$v['rule_id']}">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td colspan="4" class="bgtt aleft">
+			<span class="fl"><button onclick="return pe_cfall(this, 'rule_id', 'form', '批量删除')" href="admin.php?mod=rule&act=del">批量删除</button></span>
+			<span class="fenye"></span>
+		</td>
+	</tr>
+	</tbody></table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

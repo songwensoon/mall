@@ -1,0 +1,92 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">增加规格</span>
+			<span class="fr fabu"><a href="admin.php?mod=rule&act=add">增加规格</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form enctype="multipart/form-data" method="post">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" class="wenzhang">
+		<tbody>
+		<tr>
+			<td width="100" align="right" class="bg_f8">规格名称：</td>
+			<td colspan="3"><input type="text" class="inputall input300" value="{$info['rule_name']}" name="info[rule_name]"></td>
+		</tr>
+		<tr>
+			<td width="100" align="right" class="bg_f8">规格备注：</td>
+			<td colspan="3"><input type="text" class="inputall input300" value="{$info['rule_memo']}" name="info[rule_memo]"></td>
+		</tr>
+		</tbody>
+		</table>
+		<div class="now mat10">
+			<div class="now_l"></div>
+			<div class="now_m">
+				<span class="fl">规格值列表</span>
+				<span class="fr fabu"><a href="javascript:rule_dataadd();">增加规格值</a></span>
+			</div>
+			<div class="now_r"></div>
+			<div class="clear"></div>
+		</div>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" id="rule_data" class="list mat5">
+			<tbody>
+			<tr>
+				<td width="375" class="bgtt">规格值名称</td>
+				<td width="" class="bgtt">操作</td>
+			</tr>
+			<!--{if(!empty($infotdata)):}-->
+			<!--{foreach($infotdata as $v):}-->
+			<tr>
+				<td style="background-color: rgb(255, 255, 255);"><input type="text" class="inputall" value="{$v['ruledata_name']}" name="name[{$v['ruledata_id']}]"></td>
+				<td style="background-color: rgb(255, 255, 255);">
+					<img src="/template/default/admin/images/icon_up.gif" onclick="move_up(this)" class="icon_up" title="向上移动" style="cursor:pointer;">
+					<img src="/template/default/admin/images/icon_down.gif" onclick="move_down(this)" class="icon_down mal10" title="向上移动" style="cursor:pointer;">	
+					<img src="/template/default/admin/images/icon_del.gif" onclick="rule_del(this, '{$v['ruledata_id']}')" class="icon_del mal10" title="删除" style="cursor:pointer;">
+				</td>
+			</tr>
+			<!--{endforeach;}-->
+			<!--{endif;}-->
+			</tbody>
+		</table>
+		<div class="mat10 center"><input type="submit" class="tjbtn" value="提 交" name="pesubmit"></div>
+	</form>
+</div>
+<script charset="utf-8" type="text/javascript">
+function move_up(obj) {
+	var current = $(obj).parent().parent();
+	var prev = current.prev();
+	if (current.index()>1) current.insertBefore(prev);
+}
+function move_down(obj) {
+	var current = $(obj).parent().parent();
+	var next = current.next();
+	if (next) current.insertAfter(next);
+}
+function rule_del(_this, rule_id) {
+	if (rule_id == 0) {
+		$(_this).parents("tr").remove();
+	} else {
+		$.getJSON("/admin.php",  {"mod":"rule","act":"del_data","id":rule_id},function(json){
+			if (json.result == true) {
+				$(_this).parents("tr").remove();
+			}
+			else {
+				alert(json.show)
+			}
+		})
+	}
+}
+var rule_datahtml = '<tr>';
+rule_datahtml += '<td><input type="text" name="name[]" class="inputall" /><input type="hidden" name="isnew[]" value="1" /></td>';
+rule_datahtml += '<td><img style="cursor:pointer;" title="向上移动" class="icon_up" onclick="move_up(this)" src="/template/default/admin/images/icon_up.gif" />';
+rule_datahtml += ' <img style="cursor:pointer;" title="向上移动" class="icon_down mal10" onclick="move_down(this)" src="/template/default/admin/images/icon_down.gif" />';
+rule_datahtml += ' <img style="cursor:pointer;" title="向上移动" class="icon_del mal10" onclick="rule_del(this, 0)" src="/template/default/admin/images/icon_del.gif" />';
+rule_datahtml += '</td></tr>';
+function rule_dataadd() {
+	$("#rule_data").append(rule_datahtml);
+} 
+</script>
+<!--{include(pe_tpl('footer.html'));}-->
